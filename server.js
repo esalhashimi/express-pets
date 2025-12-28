@@ -1,10 +1,14 @@
-//.dotenv
+// dotenv
 const dotenv = require('dotenv');
 dotenv.config();
-//.express
+// express
 const express = require('express');
 const app = express();
-//.mongoose
+
+//Controller
+const petCtrl = require("./controllers/pets");
+
+// mongoose
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.MONGODB_URL);
@@ -14,11 +18,16 @@ mongoose.connection.on('connected', () => {
 });
 
 
-//.MiddleWare
+
 const morgan = require('morgan');
+
+// MiddleWare
 app.use(morgan('dev'));
 
 app.use(express.json());
+
+//Router
+app.use("/pets" , petCtrl)
 
 
 
