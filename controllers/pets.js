@@ -10,7 +10,17 @@ const router = express.Router()
 
 // POST + /pets/
 router.post("/" , async (req , res)=>{
-res.json(req.body);
+    try{
+        //use the model to insert the data into db
+        const pet = await Pet.create(req.body)
+
+        // respond with the new pet data
+        res.status(201).json({pet})
+    }
+    catch(error){
+        console.log(error)
+        res.status(500).json({error:"failed to create pet"});
+    }
 })
 
 // export the router
