@@ -23,6 +23,8 @@ router.post("/" , async (req , res)=>{
     }
 })
 
+
+// get + /pets
 router.get("/" , async(req , res)=>{
     try{
         const pets = await Pet.find({});
@@ -35,6 +37,7 @@ router.get("/" , async(req , res)=>{
     }
 })
 
+//get + /pets/id
 router.get("/:id" , async(req,res)=>{
     try{
         // get the id from the req params
@@ -61,12 +64,30 @@ router.get("/:id" , async(req,res)=>{
     }
 })
 
+// Delete + /pets/id
 router.delete('/:id', async (req, res) => {
     try
     {
+        //get the id from params
         const {id} = req.params;
+
+        // try to find and delete the pet using the id
         const pet = await Pet.findByIdAndDelete(id);
-        res.status(200).json({message: "Deleted"});
+
+        // if there is no pet send 404
+        if(!pet){
+            res.status(404).json({error:"Pet not Found"})
+        }
+
+        //else
+            else{
+                // send back massege to say deleted
+                res.status(200).json({message: "Deleted"});
+
+            }
+        
+       
+        
     }
     catch(error)
     {
@@ -74,6 +95,9 @@ router.delete('/:id', async (req, res) => {
         res.status(500).json({error: "failed to get pet"});
     }
 });
+
+//
+router.put
 
 // export the router
 module.exports = router
