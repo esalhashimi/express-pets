@@ -82,7 +82,7 @@ router.delete('/:id', async (req, res) => {
         //else
             else{
                 // send back massege to say deleted
-                res.status(200).json({message: "Deleted"});
+                res.status(200).json({pet});
 
             }
         
@@ -92,12 +92,29 @@ router.delete('/:id', async (req, res) => {
     catch(error)
     {
         console.log(error);
-        res.status(500).json({error: "failed to get pet"});
+        res.status(500).json({error: "Failed to Delete pet"});
     }
 });
 
-//
-router.put
+//put + /pets/id
+router.put("/:id" , async (req , res) =>{
+    try{
+        const {id} = req.params
+        const pet = await Pet.findByIdAndUpdate(id , req.body , {new:true})
+
+        if(!pet){
+            res.status(404).json({error:"Pet not found"})
+        }
+        else{
+            res.status(200).json({pet})
+        }
+
+    }
+    catch(error){
+        console.log(error);
+        res.status(500).json({error: "Failed to Update pet"});
+    }
+})
 
 // export the router
 module.exports = router
